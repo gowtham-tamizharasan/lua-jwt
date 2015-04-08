@@ -54,7 +54,10 @@ function data.decode(str, options)
   if not dotFirst then return nil, "Invalid token" end
   str = str:gsub('-','+'):gsub('_','/')
   local header = json.decode((basexx.from_base64(str:sub(1,dotFirst-1))))
-
+  -- IF Algorithm is passed, overwrite it
+  if options and options.alg then
+    header.alg = options.alg
+  end
   return getJwt(header):decode(header, str, options)
 end
 
